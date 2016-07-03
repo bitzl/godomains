@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"./godomains"
+	//"./godomains"
+	"github.com/bitzl/godomains/godomains"
 )
 
 func main() {
