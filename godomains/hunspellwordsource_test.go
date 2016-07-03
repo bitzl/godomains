@@ -2,17 +2,17 @@ package godomains
 
 import "testing"
 
-type testpair struct {
+type testitem struct {
 	line        string
 	isValid     bool
 	description string
 }
 
-var lines = []testpair{
+var lines = []testitem{
 	{"something", true, "is valid because it starts with a letter."},
 	{"something/123", true, "is valid because it starts with a letter."},
 	{"<something", false, "is not valid because it starts with '<'"},
-	{"a something", false, "is not valid because it starts with a space"},
+	{" something", false, "is not valid because it starts with a space"},
 }
 
 func TestIfSlashesEndWords(t *testing.T) {
