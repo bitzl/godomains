@@ -4,16 +4,24 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	//"./godomains"
-	"github.com/bitzl/godomains/godomains"
+	"github.com/bitzl/godomains/lib"
 )
 
 func main() {
+	if len(os.Args) != 3 {
+		log.Fatalf("Usage: godomains <tld> <source> | %d", len(os.Args))
+	}
+
 	log.Println("Start processing.")
 
 	//source := "https://cgit.freedesktop.org/libreoffice/dictionaries/tree/en/en_US.dic"
-	tld := "." + os.Args[1]
+	tld := os.Args[1]
+	if strings.Index(tld, ".") != 0 {
+		log.Fatal("<tld> must start with '.' but is '" + tld + "'.")
+	}
 	log.Println("Looking for " + tld + " domains.")
 	source := os.Args[2]
 	log.Println("Streaming dictionary from " + source + "")
@@ -49,8 +57,8 @@ func main() {
 func process(wordsource godomains.WordSource, tld string, destFile *os.File) int {
 	wordcount := 0
 	for wordsource.Next() {
-		if wordcount > 50 {
-			break
+		if wordcount%500 == 0 {
+			log.Printf("Checked %d domains.", wordcount)
 		}
 		domain := wordsource.Word() + tld
 		if godomains.IsAvailable(domain) {
